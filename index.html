@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Portal</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Student Registration Portal</h1>
+
+    <form action="/register" method="POST">
+
+        <label>Full Name</label>
+        <input type="text" name="name" required>
+
+        <label>Email Address</label>
+        <input type="email" name="email" required>
+
+        <label>Mobile Number</label>
+        <input
+            type="text"
+            name="mobile"
+            pattern="[0-9]{10}"
+            maxlength="10"
+            required>
+
+        <label>Date of Birth</label>
+        <input type="date" name="dob" required>
+
+        <label>Gender</label>
+
+        <div class="gender">
+            <input type="radio" name="gender" value="Male" required> Male
+            <input type="radio" name="gender" value="Female"> Female
+            <input type="radio" name="gender" value="Other"> Other
+        </div>
+
+        <label>Course</label>
+
+        <select name="course" required>
+            <option value="">Select Course</option>
+            <option>BCA</option>
+            <option>BSc</option>
+            <option>BTech</option>
+            <option>BCom</option>
+            <option>MCA</option>
+        </select>
+
+        <label>Address</label>
+
+        <textarea name="address" rows="4" required></textarea>
+
+        <button type="submit">
+            Register Student
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/students">
+        View Registered Students
+    </a>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
