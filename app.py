@@ -3,9 +3,7 @@ import sqlite3
 import re
 
 app = Flask(__name__)
-
-# ---------------- DATABASE ----------------
-
+ 
 def get_connection():
     conn = sqlite3.connect("students.db")
     conn.row_factory = sqlite3.Row
@@ -26,8 +24,8 @@ def create_table():
             gender TEXT NOT NULL,
             course TEXT NOT NULL,
             address TEXT NOT NULL
-        )
-    """)
+            )
+         """)
 
     conn.commit()
     conn.close()
@@ -35,14 +33,9 @@ def create_table():
 
 create_table()
 
-# ---------------- HOME PAGE ----------------
-
 @app.route("/")
 def home():
     return render_template("index.html")
-
-
-# ---------------- REGISTER ----------------
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -55,23 +48,19 @@ def register():
     course = request.form["course"]
     address = request.form["address"]
 
-    # Empty Validation
     if not all([name, email, mobile, dob, gender, course, address]):
         return "All fields are required!"
 
-    # Email Validation
     email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     if not re.match(email_pattern, email):
         return "Invalid Email Address"
 
-    # Mobile Validation
     if not mobile.isdigit() or len(mobile) != 10:
         return "Mobile number must contain exactly 10 digits"
 
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Duplicate Email Check
     cursor.execute("SELECT * FROM students WHERE email=?", (email,))
     existing = cursor.fetchone()
 
@@ -90,9 +79,6 @@ def register():
 
     return redirect(url_for("students"))
 
-
-# ---------------- STUDENT LIST ----------------
-
 @app.route("/students")
 def students():
 
@@ -106,9 +92,6 @@ def students():
 
     return render_template("students.html", students=data)
 
-
-# ---------------- VIEW STUDENT ----------------
-
 @app.route("/student/<int:id>")
 def student(id):
 
@@ -121,9 +104,6 @@ def student(id):
     conn.close()
 
     return render_template("student.html", student=data)
-
-
-# ---------------- RUN ----------------
 
 if __name__ == "__main__":
     app.run(debug=True)
